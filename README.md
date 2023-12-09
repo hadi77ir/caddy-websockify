@@ -28,7 +28,7 @@ xcaddy build --with github.com/hadi77ir/caddy-websockify
 
 Then either launch it directly:
 ```shell
-caddy websockify -listen ':80' 'tcp://127.0.0.1:1080'
+./caddy websockify -listen ':80' 'tcp://127.0.0.1:1080'
 ```
 
 or configure using a Caddyfile:
@@ -37,7 +37,32 @@ mywebsite.com {
   websockify /ssh-ws tcp://127.0.0.1:22
 }
 ```
+### A fully-fledged example
+Your Caddyfile for a website with:
+- 
+- WordPress installation at `/var/www/wordpress/`
+- PHP-FPM socket at `/run/php/php-version-fpm.sock`
+- SSH at `127.0.0.1:22`
+- VMess at `127.0.0.1:8080`
+- MTProto at `127.0.0.1:9090`
+- API server at `127.0.0.1:2080`
 
+may look like this:
+```
+tls myemail@mail.local
+example.com {
+	root * /var/www/wordpress
+	websockify /ssh-ws tcp://127.0.0.1:22
+	websockify /vmess tcp://127.0.0.1:8080
+	websockify /mtproto tcp://127.0.0.1:9090
+	reverse_proxy /api/* 127.0.0.1:2080
+	encode gzip
+	php_fastcgi unix//run/php/php-version-fpm.sock
+	file_server
+}
+```
+
+For more information on configuration via Caddyfile, visit [official documentation](https://caddyserver.com/docs/caddyfile).
 ## License
 Apache 2.0 License
 
