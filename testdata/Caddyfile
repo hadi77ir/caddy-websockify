@@ -1,0 +1,10 @@
+{
+    order websockify before reverse_proxy
+}
+
+http://localhost:3080 {
+    log {
+        level DEBUG
+    }
+    websockify tcp://127.0.0.1:3081
+}
