@@ -1,10 +1,10 @@
 package websockify
 
 import (
-	"fmt"
-	"go.uber.org/zap"
 	"io"
 	"net"
+
+	"go.uber.org/zap"
 )
 
 func ConnCopy(dst, src net.Conn, logger *zap.Logger, copyDone chan struct{}) {
@@ -26,9 +26,10 @@ func ConnCopy(dst, src net.Conn, logger *zap.Logger, copyDone chan struct{}) {
 			return
 		default:
 		}
-		logger.Error(fmt.Sprintf("Failed to copy connection: %s", err),
-			zap.Field{Key: "src", String: src.RemoteAddr().String()},
-			zap.Field{Key: "dst", String: dst.RemoteAddr().String()})
+		logger.Error("Failed to copy connection",
+			zap.Error(err),
+			zap.String("src", src.RemoteAddr().String()),
+			zap.String("dst", dst.RemoteAddr().String()))
 	}
 }
 

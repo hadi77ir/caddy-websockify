@@ -18,13 +18,14 @@ package websockify
 import (
 	"encoding/json"
 	"fmt"
-	"golang.org/x/net/context"
 	"net/http"
 	"net/textproto"
 	"strings"
 	"sync"
 	"sync/atomic"
 	"time"
+
+	"golang.org/x/net/context"
 
 	"github.com/spf13/cobra"
 	"go.uber.org/zap"
@@ -34,6 +35,7 @@ import (
 	"github.com/caddyserver/caddy/v2"
 	"github.com/caddyserver/caddy/v2/caddyconfig"
 	"github.com/caddyserver/caddy/v2/caddyconfig/caddyfile"
+	"github.com/caddyserver/caddy/v2/caddyconfig/httpcaddyfile"
 	"github.com/caddyserver/caddy/v2/modules/caddyhttp"
 	"github.com/gorilla/websocket"
 	N "github.com/hadi77ir/wsproxy/pkg/net"
@@ -42,6 +44,7 @@ import (
 
 func init() {
 	caddy.RegisterModule(new(ProxyHandler))
+	httpcaddyfile.RegisterHandlerDirective("websockify", parseCaddyfile)
 	caddycmd.RegisterCommand(caddycmd.Command{
 		Name:  "websockify",
 		Usage: `[--listen <addr>] [--access-log] [--debug] [--header "Field: value"] <upstream> [<upstream>]`,
@@ -82,7 +85,6 @@ type ProxyHandler struct {
 	// When reaches near its maximum, it will be set to zero.
 	counter  atomic.Int64
 	mutex    sync.RWMutex
-	once     sync.Once
 	upgrader *websocket.Upgrader
 	dialers  []N.PrimedDialerFunc
 	logger   *zap.Logger
@@ -159,12 +161,21 @@ func (s *ProxyHandler) nextDialer() N.PrimedDialerFunc {
 //
 //	websockify [<matcher>] <upstream> [<upstream>]
 func (s *ProxyHandler) UnmarshalCaddyfile(d *caddyfile.Dispenser) error {
+	d.Next() // consume directive name
+
 	s.Upstream = make([]string, 0)
 	for d.NextArg() {
 		arg := d.Val()
 		s.Upstream = append(s.Upstream, arg)
 	}
 	return nil
+}
+
+// parseCaddyfile unmarshals tokens from h into a new ProxyHandler.
+func parseCaddyfile(h httpcaddyfile.Helper) (caddyhttp.MiddlewareHandler, error) {
+	var s ProxyHandler
+	err := s.UnmarshalCaddyfile(h.Dispenser)
+	return &s, err
 }
 
 func (s *ProxyHandler) ServeHTTP(w http.ResponseWriter, r *http.Request, next caddyhttp.Handler) error {
@@ -279,10 +290,8 @@ func cmdWebsockify(fl caddycmd.Flags) (int, error) {
 
 		// create route with handler
 		handler := &ProxyHandler{
-			Headers: hdr,
-		}
-		for _, upstream := range upstreams {
-			handler.Upstream = append(handler.Upstream, upstream)
+			Headers:  hdr,
+			Upstream: append([]string{}, upstreams...),
 		}
 
 		handlers = append(handlers, caddyconfig.JSONModuleObject(handler, "handler", "websockify", nil))
@@ -305,12 +314,12 @@ func cmdWebsockify(fl caddycmd.Flags) (int, error) {
 	}
 
 	// finish building the config
-	var false bool
+	disable := false
 	cfg := &caddy.Config{
 		Admin: &caddy.AdminConfig{
 			Disabled: true,
 			Config: &caddy.ConfigSettings{
-				Persist: &false,
+				Persist: &disable,
 			},
 		},
 		AppsRaw: caddy.ModuleMap{
@@ -349,6 +358,7 @@ func cmdWebsockify(fl caddycmd.Flags) (int, error) {
 
 // Interface guards
 var (
+	_ caddy.Provisioner           = (*ProxyHandler)(nil)
 	_ caddyhttp.MiddlewareHandler = (*ProxyHandler)(nil)
 	_ caddyfile.Unmarshaler       = (*ProxyHandler)(nil)
 )
