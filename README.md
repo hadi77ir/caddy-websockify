@@ -34,7 +34,9 @@ Then either launch it directly:
 or configure using a Caddyfile:
 ```shell
 mywebsite.com {
-  websockify /ssh-ws tcp://127.0.0.1:22
+  route /ssh-ws {
+    websockify tcp://127.0.0.1:22
+  }
 }
 ```
 ### A fully-fledged example
@@ -52,9 +54,15 @@ may look like this:
 tls myemail@mail.local
 example.com {
 	root * /var/www/wordpress
-	websockify /ssh-ws tcp://127.0.0.1:22
-	websockify /vmess tcp://127.0.0.1:8080
-	websockify /mtproto tcp://127.0.0.1:9090
+	route /ssh-ws { 
+	    websockify tcp://127.0.0.1:22
+	}
+	route /vmess {
+	    websockify tcp://127.0.0.1:8080
+	}
+	route /mtproto {
+	    websockify tcp://127.0.0.1:9090
+	}
 	reverse_proxy /api/* 127.0.0.1:2080
 	encode gzip
 	php_fastcgi unix//run/php/php-version-fpm.sock
