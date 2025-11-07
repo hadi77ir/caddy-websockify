@@ -26,10 +26,21 @@ func ConnCopy(dst, src net.Conn, logger *zap.Logger, copyDone chan struct{}) {
 			return
 		default:
 		}
-		logger.Error("Failed to copy connection",
-			zap.Error(err),
-			zap.String("src", src.RemoteAddr().String()),
-			zap.String("dst", dst.RemoteAddr().String()))
+
+		var srcAddr, dstAddr string
+		if src != nil && src.RemoteAddr() != nil {
+			srcAddr = src.RemoteAddr().String()
+		}
+		if dst != nil && dst.RemoteAddr() != nil {
+			dstAddr = dst.RemoteAddr().String()
+		}
+
+		if logger != nil {
+			logger.Error("Failed to copy connection",
+				zap.String("src", srcAddr),
+				zap.String("dst", dstAddr),
+				zap.Error(err))
+		}
 	}
 }
 

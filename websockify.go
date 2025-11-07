@@ -251,11 +251,11 @@ func cmdWebsockify(fl caddycmd.Flags) (int, error) {
 	accessLog := fl.Bool("access-log")
 	debug := fl.Bool("debug")
 
-	if fl.NArg() == 0 {
+	upstreams := fl.Args()
+
+	if len(upstreams) == 0 {
 		return caddy.ExitCodeFailedStartup, fmt.Errorf("upstream not specified")
 	}
-
-	upstreams := fl.Args()
 
 	// build headers map
 	headers, err := fl.GetStringSlice("header")
