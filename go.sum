@@ -239,8 +239,8 @@ github.com/hadi77ir/go-logging v0.0.0-20221030142713-7ce400b91bb4 h1:Daqd1uMf1jg
 github.com/hadi77ir/go-logging v0.0.0-20221030142713-7ce400b91bb4/go.mod h1:wSYaYaoeH40nDbQxoVgSSBB5cVp9KivA3UAG2Tjk4I4=
 github.com/hadi77ir/go-registry v0.0.0-20230217041210-fe1d54c40419 h1:oGAaGnr0TNtBH+DlUuNTqzNHJx4u5wkDlyZEN5VZw/E=
 github.com/hadi77ir/go-registry v0.0.0-20230217041210-fe1d54c40419/go.mod h1:h30wRkn6wdqZVkwiFYGuyMgV1mLCSfe8ScU6XFbaZVA=
-github.com/hadi77ir/wsproxy v0.0.0-20230415013844-b2b00ff16749 h1:dKwvfYY0Tgjah+SEsi7pOz8Ebes+dCYwTlfzaHoCDPo=
-github.com/hadi77ir/wsproxy v0.0.0-20230415013844-b2b00ff16749/go.mod h1:sb1UfGM5ZkvU/82BF7Qm3UKi1erRqc0udtWtXJwi+YA=
+github.com/hadi77ir/wsproxy v0.0.2 h1:vRjXQI3YxuDd0B7DfILdBzn41lSmIdQrV4R3JaGOZuI=
+github.com/hadi77ir/wsproxy v0.0.2/go.mod h1:sb1UfGM5ZkvU/82BF7Qm3UKi1erRqc0udtWtXJwi+YA=
 github.com/hashicorp/consul/api v1.3.0/go.mod h1:MmDNSzIMUjNpY/mQ398R4bk2FnqQLoPndWW5VkKPlCE=
 github.com/hashicorp/consul/sdk v0.3.0/go.mod h1:VKf9jXwCTEY1QZP2MOLRhb5i/I/ssyNV1vwHyQBF0x8=
 github.com/hashicorp/errwrap v1.0.0/go.mod h1:YH+1FKiLXxHSkmPseP+kNlulaMuP3n2brvKWEqk/Jc4=

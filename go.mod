@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/gorilla/websocket v1.5.0
-	github.com/hadi77ir/wsproxy v0.0.0-20230415013844-b2b00ff16749
+	github.com/hadi77ir/wsproxy v0.0.2
 	go.uber.org/zap v1.26.0
 	golang.org/x/net v0.17.0
 )
