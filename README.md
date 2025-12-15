@@ -71,6 +71,9 @@ example.com {
 ```
 
 For more information on configuration via Caddyfile, visit [official documentation](https://caddyserver.com/docs/caddyfile).
+
+For more information on setting parameters of destination URLs, visit [wsproxy documentation](https://github.com/hadi77ir/wsproxy/blob/master/README.md).
+
 ## License
 Apache 2.0 License
 
