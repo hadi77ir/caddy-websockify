@@ -60,6 +60,9 @@ example.com {
 	route /vmess {
 	    websockify tcp://127.0.0.1:8080
 	}
+	route /mysql {
+	    websockify tls://127.0.0.1:3307?tls.ca=mysql-ca.crt
+	}
 	route /mtproto {
 	    websockify tcp://127.0.0.1:9090
 	}
