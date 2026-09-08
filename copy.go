@@ -20,11 +20,11 @@ func ConnCopy(dst, src net.Conn, logger *zap.Logger, copyDone chan struct{}) {
 	if err != nil {
 		opErr, ok := err.(*net.OpError)
 		switch {
-		case ok && opErr.Op == "read":
+		case ok && opErr.Op == "writeto":
 			return
 		case ok && opErr.Op == "readfrom":
 			return
-		case ok && opErr.Op == "writeto":
+		case ok && opErr.Op == "read":
 			return
 		default:
 		}
