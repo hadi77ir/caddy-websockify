@@ -1,3 +1,5 @@
+
+
 # Websockify for Caddy
 Easily integrate "websockify" into your [Caddy](https://github.com/caddyserver/caddy) setup with a single directive.
 
@@ -28,7 +30,7 @@ xcaddy build --with github.com/hadi77ir/caddy-websockify
 
 Then either launch it directly:
 ```shell
-./caddy websockify -listen ':80' 'tcp://127.0.0.1:1080'
+./caddy websockify --listen ':80' 'tcp://127.0.0.1:1080'
 ```
 
 or configure using a Caddyfile:
